@@ -5,7 +5,7 @@ The Jekyll theme for the MaksForge app sites at `maksforge.com/<app>/`. It match
 To use it, an app's `docs/_config.yml` needs:
 
 ```yaml
-remote_theme: maksforge/pages-theme
+remote_theme: maks-sredniawa/pages-theme
 plugins:
   - jekyll-remote-theme
 maksforge:
