@@ -15,4 +15,4 @@ maksforge:
   chrome: https://chromewebstore.google.com/detail/<slug>/<id>   # optional
 ```
 
-`title` and `description` in the same file fill the app bar. GitHub Pages fetches the theme on every build of the app site, so a change here reaches an app the next time its site rebuilds.
+`title` and `description` in the same file fill the app bar. The maksforge.com deploy (`maks-sredniawa/maks-sredniawa.github.io`) fetches the theme on every build and checks for changes every 15 minutes, so a change here reaches every app within about 15 minutes.
