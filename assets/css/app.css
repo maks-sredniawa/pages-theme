@@ -2,38 +2,3 @@
 .is-home .mf-prose > h1:first-child {
   display: none;
 }
-
-.mf-app-head--compact > .mf-wrap {
-  grid-template-columns: 64px minmax(0, 1fr) auto;
-  gap: 24px;
-  padding-top: 28px;
-  padding-bottom: 24px;
-}
-
-.mf-app-head--compact .mf-app-head__icon img {
-  width: 64px;
-  height: 64px;
-  border-radius: 10px;
-}
-
-.mf-app-head__name {
-  margin-top: 8px;
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 1.1;
-}
-
-.mf-app-head__name a:hover {
-  color: var(--color-brand);
-}
-
-.mf-app-head--compact + .mf-app-body > .mf-wrap {
-  border-top: 1px solid var(--color-rule-strong);
-}
-
-@media (max-width: 1099px) {
-  .mf-app-head--compact > .mf-wrap {
-    grid-template-columns: 64px minmax(0, 1fr);
-  }
-}
