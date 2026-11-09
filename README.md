@@ -13,9 +13,9 @@ maksforge:
   status: live        # live, building or oss
   play: https://play.google.com/store/apps/details?id=<package>   # optional
   chrome: https://chromewebstore.google.com/detail/<slug>/<id>   # optional
-  facts:                # optional, extra cells in the fact strip on the app's home page
-    - label: Package
-      value: com.maksforge.<app>
+  facts:                # optional, extra rows in the fact list on the app's home page, alongside the Status, Price, Package, Source and Privacy rows the layout adds itself
+    - label: Requires
+      value: Android 8.0+
       mono: true
 ```
 

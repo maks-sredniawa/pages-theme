@@ -29,109 +29,143 @@
   {%- when 'building' %}{% assign status_label = 'In development' %}
   {%- when 'oss' %}{% assign status_label = 'Open source' %}
   {%- endcase %}
+  {%- assign kind = '' %}
+  {%- if app.chrome %}{% assign kind = 'Chrome extension' %}{% elsif app.play %}{% assign kind = 'Android app' %}{% endif %}
+  {%- assign sections = content | split: '<h2 id="' %}
 
-  <header class="mf-topbar">
-    <div class="mf-wrap">
-      <a class="mf-topbar__brand" href="/" aria-label="MaksForge home">
-        <img src="/assets/logo-mark-128.webp" alt="" width="34" height="34">
-        <span>MaksForge</span>
-      </a>
-      <nav aria-label="{{ site.title | escape }}">
-        <a href="/#live">All apps</a>
-        <a href="{{ privacy }}">Privacy</a>
-        <a href="{{ site.github.repository_url }}">Source</a>
-        <a class="mf-topbar__cta" href="https://buymeacoffee.com/maksforge">Support</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section class="mf-app-head{% unless is_home %} mf-app-head--compact{% endunless %}">
-      <div class="mf-wrap">
-        <div class="mf-app-head__icon">
-          {%- if app.icon %}
-          <img src="{{ app.icon }}" alt="" width="150" height="150">
-          {%- endif %}
+  <div class="mf-wrap mf-dossier{% unless is_home %} mf-dossier--compact{% endunless %}">
+    <header class="mf-dossier__file">
+      <div class="mf-dossier__top">
+        <a class="mf-dossier__brand" href="/" aria-label="MaksForge home">
+          <img src="/assets/logo-mark-128.webp" alt="" width="28" height="28">
+          <span>MaksForge</span>
+        </a>
+        <a class="mf-dossier__back" href="/#live">← All apps</a>
+      </div>
+      <div class="mf-dossier__card">
+        {%- if app.icon %}
+        <div class="mf-dossier__plate">
+          <img src="{{ app.icon }}" alt="" width="176" height="176">
           {%- if is_home %}
           <span class="mf-stamp" aria-hidden="true">Free</span>
           {%- endif %}
         </div>
+        {%- endif %}
         <div>
-          <div class="mf-app-head__tags">
+          <div class="mf-dossier__tags">
             {%- if status_label %}
             <span class="mf-tag mf-tag--{{ app.status }}">{{ status_label }}</span>
             {%- endif %}
+            {%- if kind != '' %}
+            <span class="mf-tag mf-tag--plain">{{ kind }}</span>
+            {%- endif %}
           </div>
           {%- if is_home %}
-          <h1 class="mf-display">{{ site.title | escape }}</h1>
-          <p class="mf-app-head__standfirst">{{ site.description | escape }}</p>
+          <h1 class="mf-dossier__name">{{ site.title | escape }}</h1>
+          <p class="mf-dossier__standfirst">{{ site.description | escape }}</p>
           {%- else %}
-          <p class="mf-app-head__name"><a href="{{ '/' | relative_url }}">{{ site.title | escape }}</a></p>
+          <p class="mf-dossier__name"><a href="{{ '/' | relative_url }}">{{ site.title | escape }}</a></p>
           {%- endif %}
+          <div class="mf-dossier__actions">
+            {%- if app.play %}
+            <a class="mf-btn mf-btn--primary mf-btn--raised" href="{{ app.play }}">Google Play</a>
+            {%- endif %}
+            {%- if app.chrome %}
+            <a class="mf-btn mf-btn--primary mf-btn--raised" href="{{ app.chrome }}">Chrome Web Store</a>
+            {%- endif %}
+            <a class="mf-btn{% unless app.play or app.chrome %} mf-btn--primary mf-btn--raised{% endunless %}" href="{{ site.github.repository_url }}">Source on GitHub</a>
+          </div>
         </div>
-        <div class="mf-app-head__actions">
-          {%- if app.play %}
-          <a class="mf-btn mf-btn--primary mf-btn--raised" href="{{ app.play }}">Google Play</a>
+        {%- if is_home %}
+        <dl class="mf-dossier__facts">
+          {%- if status_label %}
+          <div><dt>Status</dt><dd>{{ status_label }}</dd></div>
           {%- endif %}
-          {%- if app.chrome %}
-          <a class="mf-btn mf-btn--primary mf-btn--raised" href="{{ app.chrome }}">Chrome Web Store</a>
+          <div><dt>Price</dt><dd>Free, no ads</dd></div>
+          {%- if app.play contains 'id=' %}
+          <div><dt>Package</dt><dd class="mf-mono">{{ app.play | split: 'id=' | last | split: '&' | first | escape }}</dd></div>
           {%- endif %}
-          <a class="mf-btn{% unless app.play or app.chrome %} mf-btn--primary mf-btn--raised{% endunless %}" href="{{ site.github.repository_url }}">Source on GitHub</a>
-        </div>
-      </div>
-    </section>
-
-    {%- if is_home %}
-    <section class="mf-spec">
-      <dl class="mf-wrap">
-        {%- if status_label %}
-        <div><dt class="mf-sc">Status</dt><dd>{{ status_label }}</dd></div>
+          {%- for fact in app.facts %}
+          <div><dt>{{ fact.label | escape }}</dt><dd{% if fact.mono %} class="mf-mono"{% endif %}>{{ fact.value | escape }}</dd></div>
+          {%- endfor %}
+          <div><dt>Source</dt><dd class="mf-mono"><a href="{{ site.github.repository_url }}">{{ site.github.repository_nwo }}</a></dd></div>
+          <div><dt>Privacy</dt><dd><a href="{{ privacy }}">Privacy policy</a></dd></div>
+        </dl>
         {%- endif %}
-        <div><dt class="mf-sc">Price</dt><dd>Free, no ads</dd></div>
-        {%- for fact in app.facts %}
-        <div><dt class="mf-sc">{{ fact.label | escape }}</dt><dd{% if fact.mono %} class="mf-mono"{% endif %}>{{ fact.value | escape }}</dd></div>
-        {%- endfor %}
-        <div><dt class="mf-sc">Source</dt><dd class="mf-mono"><a href="{{ site.github.repository_url }}">{{ site.github.repository_nwo }}</a></dd></div>
-        <div><dt class="mf-sc">Privacy</dt><dd><a href="{{ privacy }}">Privacy policy</a></dd></div>
-      </dl>
-    </section>
-    {%- endif %}
-
-    {%- assign sections = content | split: '<h2 id="' %}
-    <section class="mf-app-body">
-      <div class="mf-wrap">
-        <article class="mf-prose">
-          {{ content }}
-        </article>
-        <div class="mf-app-side">
-          {%- if sections.size > 2 %}
-          <nav class="mf-toc" aria-label="On this page">
-            <h2 class="mf-sc">Contents</h2>
-            <ol>
-              {%- for section in sections offset: 1 %}
-              {%- assign id = section | split: '"' | first %}
-              {%- assign heading = section | split: '</h2>' | first | remove_first: id | remove_first: '">' | strip_html %}
-              <li><a href="#{{ id }}">{{ heading }}</a></li>
-              {%- endfor %}
-            </ol>
-          </nav>
-          {%- endif %}
-          <aside class="mf-notice">
-            <p class="mf-notice__kicker mf-sc">Notice</p>
-            <h2>Like what I make?</h2>
-            <p>The apps stay free. Tips are optional and very appreciated.</p>
-            <div class="mf-notice__actions">
-              <a class="mf-btn mf-btn--brand mf-btn--raised" href="https://buymeacoffee.com/maksforge">Buy me a coffee</a>
-            </div>
-          </aside>
-          <a class="mf-app-side__back" href="/#live">← All apps</a>
-        </div>
       </div>
-    </section>
-  </main>
+    </header>
 
-  <footer class="mf-app-foot">
-    <div class="mf-wrap">
+    <main class="mf-dossier__text">
+      <p class="mf-dossier__running mf-sc">
+        <span>maksforge.com <b>/</b> {{ site.github.repository_name }}</span>
+        <span>{% if kind != '' %}{{ kind }} · {% endif %}{% if status_label %}{{ status_label }} · {% endif %}Free</span>
+      </p>
+      <article>
+        {%- assign intro = sections | first %}
+        {%- assign intro_visible = intro %}
+        {%- if is_home and intro contains '</h1>' %}
+          {%- assign text_before_h1 = intro | split: '<h1' | first | strip_html | strip %}
+          {%- if text_before_h1 == '' %}
+            {%- assign h1_hidden_by_app_css = intro | split: '</h1>' | first %}
+            {%- assign intro_visible = intro | remove_first: h1_hidden_by_app_css | remove_first: '</h1>' %}
+          {%- endif %}
+        {%- endif %}
+        {%- assign intro_text = intro_visible | strip_html | strip %}
+        {%- if intro_text != '' or intro_visible contains '<img' %}
+          {%- if is_home %}
+        <div class="mf-dossier__row">
+          <div class="mf-dossier__margin"><span class="mf-dossier__kicker mf-sc">In brief</span></div>
+          <div class="mf-prose">{{ intro }}</div>
+        </div>
+          {%- else %}
+        <div class="mf-dossier__lede mf-prose">{{ intro }}</div>
+          {%- endif %}
+        {%- endif %}
+        {%- for section in sections offset: 1 %}
+        {%- assign parts = section | split: '</h2>' %}
+        {%- assign id = parts[0] | split: '"' | first %}
+        {%- assign heading = parts[0] | remove_first: id | remove_first: '">' %}
+        {%- assign body = section | remove_first: parts[0] | remove_first: '</h2>' %}
+        <section class="mf-dossier__row" id="{{ id }}">
+          <div class="mf-dossier__margin">
+            <span class="mf-dossier__num mf-sc" aria-hidden="true">§{{ forloop.index }}</span>
+            <h2>{{ heading }}</h2>
+          </div>
+          <div class="mf-prose">{{ body }}</div>
+        </section>
+        {%- endfor %}
+      </article>
+    </main>
+
+    <div class="mf-dossier__pinned">
+      {%- if sections.size > 2 %}
+      <nav class="mf-dossier__toc" aria-label="On this page">
+        <h2 class="mf-sc">Contents</h2>
+        <ol>
+          {%- for section in sections offset: 1 %}
+          {%- assign id = section | split: '"' | first %}
+          {%- assign heading = section | split: '</h2>' | first | remove_first: id | remove_first: '">' | strip_html %}
+          <li><a href="#{{ id }}">{{ heading }}</a></li>
+          {%- endfor %}
+        </ol>
+      </nav>
+      {%- endif %}
+      <aside class="mf-notice">
+        <p class="mf-notice__kicker mf-sc">Notice</p>
+        <h2>Like what I make?</h2>
+        <p>The apps stay free. Tips are optional and very appreciated.</p>
+        <div class="mf-notice__actions">
+          <a class="mf-btn mf-btn--brand mf-btn--raised" href="https://buymeacoffee.com/maksforge">Buy me a coffee</a>
+        </div>
+      </aside>
+      <nav class="mf-dossier__links mf-sc" aria-label="{{ site.title | escape }}">
+        <a href="{{ privacy }}">Privacy policy</a><a href="{{ site.github.repository_url }}">Source</a><a href="https://buymeacoffee.com/maksforge">Support</a>
+      </nav>
+    </div>
+  </div>
+
+  <footer class="mf-wrap">
+    <div class="mf-dossier__foot">
       <span>© {{ site.time | date: '%Y' }} Maksymilian Średniawa · <a href="/">MaksForge</a></span>
       <span><a href="{{ privacy }}">Privacy policy</a> · <a href="https://buymeacoffee.com/maksforge">Buy me a coffee</a></span>
     </div>
