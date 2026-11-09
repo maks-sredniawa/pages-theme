@@ -102,13 +102,24 @@
       </p>
       <article>
         {%- assign intro = sections | first %}
-        {%- if is_home %}
+        {%- assign intro_visible = intro %}
+        {%- if is_home and intro contains '</h1>' %}
+          {%- assign text_before_h1 = intro | split: '<h1' | first | strip_html | strip %}
+          {%- if text_before_h1 == '' %}
+            {%- assign h1_hidden_by_app_css = intro | split: '</h1>' | first %}
+            {%- assign intro_visible = intro | remove_first: h1_hidden_by_app_css | remove_first: '</h1>' %}
+          {%- endif %}
+        {%- endif %}
+        {%- assign intro_text = intro_visible | strip_html | strip %}
+        {%- if intro_text != '' or intro_visible contains '<img' %}
+          {%- if is_home %}
         <div class="mf-dossier__row">
           <div class="mf-dossier__margin"><span class="mf-dossier__kicker mf-sc">In brief</span></div>
           <div class="mf-prose">{{ intro }}</div>
         </div>
-        {%- else %}
+          {%- else %}
         <div class="mf-dossier__lede mf-prose">{{ intro }}</div>
+          {%- endif %}
         {%- endif %}
         {%- for section in sections offset: 1 %}
         {%- assign parts = section | split: '</h2>' %}
@@ -147,9 +158,9 @@
           <a class="mf-btn mf-btn--brand mf-btn--raised" href="https://buymeacoffee.com/maksforge">Buy me a coffee</a>
         </div>
       </aside>
-      <p class="mf-dossier__links mf-sc">
+      <nav class="mf-dossier__links mf-sc" aria-label="{{ site.title | escape }}">
         <a href="{{ privacy }}">Privacy policy</a><a href="{{ site.github.repository_url }}">Source</a><a href="https://buymeacoffee.com/maksforge">Support</a>
-      </p>
+      </nav>
     </div>
   </div>
 
