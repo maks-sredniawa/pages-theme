@@ -37,7 +37,7 @@
   {%- assign sections = content | split: '<h2 id="' %}
   {%- assign intro = sections | first %}
   {%- assign is_long = false %}
-  {%- assign words = content | number_of_words %}
+  {%- assign words = content | strip_html | number_of_words %}
   {%- if words > 500 and sections.size > 2 %}{% assign is_long = true %}{% endif %}
 
   <header class="mf-wrap">
@@ -78,6 +78,7 @@
           {%- endif %}
         </div>
         {%- assign pitch = '' %}
+        {%- assign lead_media = '' %}
         {%- if is_home %}
           {%- assign pitch = intro %}
           {%- if intro contains '</h1>' %}
@@ -86,6 +87,11 @@
               {%- assign h1_open = intro | split: '</h1>' | first %}
               {%- assign pitch = intro | remove_first: h1_open | remove_first: '</h1>' %}
             {%- endif %}
+          {%- endif %}
+          {%- if pitch contains '<p><img' %}
+            {%- assign pitch_head = pitch | split: '<p><img' | first %}
+            {%- assign lead_media = pitch | slice: pitch_head.size, pitch.size %}
+            {%- assign pitch = pitch_head %}
           {%- endif %}
         {%- endif %}
         {%- assign pitch_text = pitch | strip_html | strip %}
@@ -126,6 +132,7 @@
 
       <main class="mf-sheet__body mf-prose">
         {%- if is_home and pitch_text != '' %}
+        {{ lead_media }}
         {{ content | remove_first: intro }}
         {%- else %}
         {{ content }}
