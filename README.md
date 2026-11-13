@@ -14,7 +14,7 @@ maksforge:
   play: https://play.google.com/store/apps/details?id=<package>   # optional
   chrome: https://chromewebstore.google.com/detail/<slug>/<id>   # optional
   kind: Android app   # optional, the label under the name; otherwise it comes from play or chrome
-  tip_links: true     # optional, shows the Buy Me a Coffee and PayPal box; off because Play has rejected apps whose links led to one
+  tip_links: true     # optional, shows the Buy Me a Coffee and PayPal box and the topbar's Support button; off because Play has rejected apps whose links led to one
 ```
 
 Each page opens with the app's row from the maksforge.com home list: icon, `title`, kind, the store and source links, the package and the status. On the app's home page the text before the first `##` heading sits in that row, up to its first image, which opens the page's text with everything after it; other pages show `description` there and start with their own text. "← All apps" goes back to the app's row on the home page, which is found by the icon's file name. Pages longer than 500 words get an "On this page" list of their `##` headings. Every class the layout uses (`mf-*`, plus the home page's `topbar`, `wordmark` and `about` pair) is styled by the shared stylesheet; `assets/css/app.css` only adapts it to Jekyll's output. The maksforge.com deploy (`maks-sredniawa/maks-sredniawa.github.io`) fetches the theme on every build and checks for changes every 15 minutes, so a change here reaches every app within about 15 minutes.
