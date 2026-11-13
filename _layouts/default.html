@@ -148,6 +148,8 @@
         <h2>Hi, I'm Maksymilian.</h2>
         <p>MaksForge is where I build the small tools I wish existed. Each one solves a single problem.</p>
       </div>
+      {%- comment %} Off by default: Play has rejected apps whose in-app links led to a page carrying payment links. {% endcomment %}
+      {%- if site.maksforge.tip_links %}
       <aside>
         <h2>Like what I make?</h2>
         <p>A tip helps me keep building. It never unlocks anything.</p>
@@ -156,6 +158,7 @@
           <a class="mf-btn" href="https://paypal.me/maksymiliansredniawa">PayPal</a>
         </div>
       </aside>
+      {%- endif %}
     </div>
   </section>
 
