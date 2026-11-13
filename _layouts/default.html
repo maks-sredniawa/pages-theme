@@ -51,7 +51,9 @@
         <a href="/#ideas">Ideas</a>
         <a href="/#about">About</a>
         <a href="https://github.com/maks-sredniawa">GitHub</a>
+        {%- if site.maksforge.tip_links %}
         <a class="topbar-cta" href="/#support">Support</a>
+        {%- endif %}
       </nav>
     </div>
   </header>
@@ -148,6 +150,7 @@
         <h2>Hi, I'm Maksymilian.</h2>
         <p>MaksForge is where I build the small tools I wish existed. Each one solves a single problem.</p>
       </div>
+      {%- if site.maksforge.tip_links %}
       <aside>
         <h2>Like what I make?</h2>
         <p>A tip helps me keep building. It never unlocks anything.</p>
@@ -156,6 +159,7 @@
           <a class="mf-btn" href="https://paypal.me/maksymiliansredniawa">PayPal</a>
         </div>
       </aside>
+      {%- endif %}
     </div>
   </section>
 
